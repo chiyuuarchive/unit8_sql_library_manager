@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  div.header
+    h1 SQL Library Manager
+    
+    p
+      a.button(id="newbtn", href='/books/new') Create New Book
+    p 
+      form(action="/books/search" method="get")
+        input#search(name="search" type="text" placeholder ="title, author etc...")
+        input#searchbtn(type="submit" value="Search")
+
+  
+  div.table
+    table
+      thead
+        tr
+          th Title
+          th Author
+          th Genre
+          th Year
+      tbody
+      each book in booksArray
+        tr
+          td 
+            a(href=`/books/${book.id}`)=book.title
+          td=book.author
+          td=book.genre 
+          td=book.year
+  br
+  
+  p
+  if search && pageNumbers > 1
+    - var n = 0;
+    while n < pageNumbers
+      a.button(id="pagebtn", href=`/books/search?search=${search}&page=${n}`)= 1+n++
+    
+      
+  else if pageNumbers > 1
+    - var n = 0;
+    while n < pageNumbers
+      a.button(id="pagebtn", href=`/books/?page=${n}`)= 1+n++
+
+  if search
+    a.button(id="homebtn", href="/") Return Back
+    
+  
+            
