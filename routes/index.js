@@ -11,9 +11,6 @@ const { Book } = require("../models");
 // The library holds 10 books per page
 const booksPerPage = 10;
 
-// Declare initial viewing page
-let page = 0;
-
 // Async handler
 function asyncHandler(cb){
   return async(req, res, next) => {
@@ -26,12 +23,14 @@ function asyncHandler(cb){
 }
 
 /* GET Home route */
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   res.redirect("/books");
 })
 
 /* GET Books route. */
 router.get("/books", asyncHandler(async (req, res, next) => {
+  // Declare initial viewing page
+  let page = 0;
   // Retrieve the page query parameter
   let currentPage = parseInt(req.query.page);
 
@@ -62,6 +61,8 @@ router.get("/books", asyncHandler(async (req, res, next) => {
 
 /* GET Search Book route */
 router.get("/books/search", asyncHandler(async (req, res) => {
+  // Declare initial viewing page
+  let page = 0;
   // Retrieve the page query parameter
   let currentPage = parseInt(req.query.page);
   
@@ -117,10 +118,8 @@ router.get("/books/new", (req, res) =>{
 /* POST New Book Form route */
 router.post("/books/new", asyncHandler(async (req, res) => {
   let book;
-  console.log(req.body);
   try {
     book = await Book.create(req.body);
-    console.log(book.toJSON());
     res.redirect("/books");
   }
   catch (error) {
@@ -152,7 +151,6 @@ router.get("/page-not-found", (req, res, next) => {
   const err = new Error();
   err.message = "Page Not Found";
   err.status = 404;
-  console.log("Custom 404 page requested.", err);
   next(err);
 });
 
@@ -171,7 +169,6 @@ router.post("/books/:id/delete", asyncHandler(async (req, res) => {
 /* GET Book Detail Update Form route */
 router.get("/books/:id", asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id);
-  console.log(book.toJSON());
   if (book) {
     res.render("update-book", {book})
   }
@@ -186,7 +183,6 @@ router.post("/books/:id", asyncHandler(async (req, res) => {
   try {
     let book = await Book.findByPk(req.params.id);
     await book.update(req.body);
-    console.log(book);
     res.redirect("/books");
   }
   catch (error) {
@@ -202,6 +198,3 @@ router.post("/books/:id", asyncHandler(async (req, res) => {
 }));
 
 module.exports = router;
-
-
-

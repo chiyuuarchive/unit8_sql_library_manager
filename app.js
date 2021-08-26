@@ -50,7 +50,6 @@ app.use((req, res, next) => {
 // Global error handler
 app.use((err, req, res, next) => {
   if (err.status === 404) {
-    console.log(`${err.message} (${err.status})`);
     // Render the "page-not-found" template
     res.render("page-not-found", {err});
 }
