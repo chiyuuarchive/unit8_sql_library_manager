@@ -1,8 +1,8 @@
-
+// Import express module
 const express = require('express');
 const router = express.Router();
 
-// Implicitly declare the no operator
+// Implicitly declare the operator
 const { Op } = require("sequelize");
 
 // Import the book model
@@ -49,7 +49,6 @@ router.get("/books", asyncHandler(async (req, res, next) => {
   const { count } = books;
   // The array of book objects to be displayed
   const booksArray = books.rows.map(book => book.toJSON());
-  console.log(booksArray);
   // Calculate number of pages
   const pageNumbers = Math.ceil(count/booksPerPage);
 
@@ -63,19 +62,15 @@ router.get("/books", asyncHandler(async (req, res, next) => {
 
 /* GET Search Book route */
 router.get("/books/search", asyncHandler(async (req, res) => {
-  // Retrieve the page query parameter e.g. "/books/page=2"
+  // Retrieve the page query parameter
   let currentPage = parseInt(req.query.page);
-
-  console.log(currentPage)
-
+  
   if (Number.isInteger(currentPage) && currentPage !== page) {
     page = currentPage;
   }
 
   // Retrieve the query parameters assigned to "search"
   let search = req.query.search;
-
-  console.log(search);
 
   // SELECT * FROM Book WHERE title LIKE `%${search}%` OR author LIKE `%${search}%`... (and so on).
   const books = await Book.findAndCountAll({
@@ -103,7 +98,6 @@ router.get("/books/search", asyncHandler(async (req, res) => {
   const { count } = books;
   // The array of book objects to be displayed
   const booksArray = books.rows.map(book => book.toJSON());
-  console.log(booksArray);
   // Calculate number of pages
   const pageNumbers = Math.ceil(count/booksPerPage);
 
