@@ -135,15 +135,12 @@ router.post("/books/new", asyncHandler(async (req, res) => {
 
 /* GET Custom 500 Error route */
 router.get("/books/noroute", (req, res, next) => {
-  res.redirect("/noroute");
+  res.redirect("/page-no-found");
 });
 
 /* GET Custom 500 Error route */
 router.get("/noroute", (req, res, next) => {
-  const err = new Error();
-  err.message = "Custom Error"
-  err.status = 500;
-  next(err);
+  res.redirect("/page-not-found")
 });
 
 /* GET Custom "404 Page Not Found" page. */
